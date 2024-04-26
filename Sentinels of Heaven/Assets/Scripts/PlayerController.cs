@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
 
         
         Jump();
+        detatchFromPlatform();
 
 
         dirX = Input.GetAxisRaw("Horizontal");
@@ -119,6 +120,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonUp("Jump"))
         {
             isJumping = false;
+        }
+    }
+
+    void detatchFromPlatform()
+    {
+        if (Input.GetButton("Horizontal")) 
+        {
+            transform.SetParent(null);
         }
     }
 

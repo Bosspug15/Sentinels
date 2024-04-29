@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
-    private Animator anim;
+    public Animator anim; //maybe make public
 
     private float dirX = 0f;
     [SerializeField] private float moveSpeed = 1f;
@@ -44,6 +44,19 @@ public class PlayerController : MonoBehaviour
 
 
         dirX = Input.GetAxisRaw("Horizontal");
+
+        anim.SetFloat("Speed", Mathf.Abs(dirX));
+
+        if (dirX < 0) 
+        {
+            sprite.flipX = true;
+        }
+
+        if (dirX > 0)
+        {
+            sprite.flipX = false;
+        }
+
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
         /*
         if (dirX > 0f)
@@ -97,8 +110,14 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
+        if (isGrounded)
+        {
+            anim.SetBool("IsJumping", false);
+        }
+
         if (isGrounded == true && Input.GetButtonDown("Jump"))
         {
+            anim.SetBool("IsJumping", true);
             isJumping = true;
             jumpTime = jumpStartTime;
             rb.velocity = Vector2.up * jumpForce;
@@ -108,6 +127,7 @@ public class PlayerController : MonoBehaviour
         {
             if (jumpTime > 0)
             {
+                anim.SetBool("IsJumping", true);
                 rb.velocity = Vector2.up * jumpForce;
                 jumpTime -= Time.deltaTime;
             }

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public Animator anim; //maybe make public
 
     private float dirX = 0f;
+    private float dirY = 0f;
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float jumpForce = 5f;
     //[SerializeField] private float jumpHeight = 3f;
@@ -20,7 +21,8 @@ public class PlayerController : MonoBehaviour
     public float jumpStartTime;
     private float jumpTime;
     private bool isJumping = false;
-    
+
+
 
     private bool isGrounded;
     public Transform groundCheck;
@@ -44,8 +46,10 @@ public class PlayerController : MonoBehaviour
 
 
         dirX = Input.GetAxisRaw("Horizontal");
+        dirY = Input.GetAxisRaw("Vertical");
 
         anim.SetFloat("Speed", Mathf.Abs(dirX));
+        anim.SetFloat("IsFalling", Mathf.Abs(dirY));
 
         if (dirX < 0) 
         {
@@ -56,6 +60,7 @@ public class PlayerController : MonoBehaviour
         {
             sprite.flipX = false;
         }
+
 
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
         /*
